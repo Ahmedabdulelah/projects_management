@@ -1,0 +1,67 @@
+{% load i18n %}
+<nav class="navbar navbar-expand-lg bg-success bg-gradient p-3 navbar-dark" >
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold fs-4 d-flex align-items-center text-white" href="#">
+            <i class="bi bi-kanban me-2 fs-3"></i>
+            إدارة المشاريع
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'project_list' %}">{% trans 'Home' %}</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'project_list' %}">المشاريع</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">المهام</a>
+            </li>
+        </ul>
+        {% if user.is_authenticated %}
+            <ul class="navbar-nav  mb-2 mb-lg-0 me-3">
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ user.username }}
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'profile' %}">{% trans 'Profile' %}</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="dropdown-item p-0">
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn w-100 text-start">
+                                {% trans 'Logout' %}
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+                </li>
+            </ul>
+
+            <form method="get" action="{% url 'project_list' %}" class="d-flex">
+            <div class="input-group">
+                <input 
+                    type="text"
+                    name="query"
+                    class="form-control"
+                    placeholder="{% trans 'Search' %}"
+                    value="{{request.GET.query}}"
+                >
+                <button class="btn btn-outline-light" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+        {% else %}
+            <a href="{% url 'login' %}" class="me-2 btn btn-outline-light">{% trans 'login' %}</a>
+            <a href="{% url 'register' %}" class=" btn btn-light">{% trans 'SignUp' %}</a>
+
+        {% endif %}
+        
+        </div>
+    </div>
+</nav>
